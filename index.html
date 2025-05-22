@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Number Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .numbers-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        .number {
+            font-size: 24px;
+            font-weight: bold;
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Random 30 Numbers</h1>
+    <div class="buttons">
+        <button id="nextBtn">Next</button>
+        <button id="copyBtn">Copy</button>
+    </div>
+    <div id="numbersContainer" class="numbers-container"></div>
+
+    <script>
+        function getRandomColor() {
+            const colors = ['#FF5733', '#33FF57', '#3357FF']; // 三列分别使用红、绿、蓝
+            return colors;
+        }
+
+        function getRandomNumber(length) {
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += Math.floor(Math.random() * 10);
+            }
+            return result;
+        }
+
+        function generateNumbers() {
+            const container = document.getElementById('numbersContainer');
+            container.innerHTML = '';
+            const colors = getRandomColor();
+            
+            for (let i = 0; i < 30; i++) {
+                const length = Math.floor(Math.random() * 4) + 4; // 4-7位
+                const number = document.createElement('div');
+                number.className = 'number';
+                number.textContent = getRandomNumber(length);
+                // 根据列数分配颜色
+                const column = i % 3;
+                number.style.color = colors[column];
+                container.appendChild(number);
+            }
+        }
+
+        function copyNumbers() {
+            const numbers = Array.from(document.querySelectorAll('.number'))
+                .map(el => el.textContent)
+                .join('\n');
+            navigator.clipboard.writeText(numbers)
+                .then(() => alert('Numbers copied to clipboard!'))
+                .catch(err => console.error('Failed to copy: ', err));
+        }
+
+        document.getElementById('nextBtn').addEventListener('click', generateNumbers);
+        document.getElementById('copyBtn').addEventListener('click', copyNumbers);
+
+        window.onload = generateNumbers;
+    </script>
+</body>
+</html>
