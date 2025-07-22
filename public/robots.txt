@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Sitemap: https://random30numbers.pages.dev/sitemap.xml
+
+Disallow: /private/
+Disallow: /tmp/
